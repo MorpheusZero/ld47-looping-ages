@@ -35,9 +35,9 @@ export interface IAge {
   timeMachineBaseGenerateMultiplier: number;
 
   /**
-   * If locked is TRUE, it means when we attempt to time travel we can't go here again unless we LOOP first to reset.
+   * This age becomes available to unlock after reaching the specified lifetime time particles.
    */
-  locked: boolean;
+  unlockedAt: number;
 
   /**
    * Some simple funny and maybe some real historical facts from the actual time period that show up sometimes in the UI.

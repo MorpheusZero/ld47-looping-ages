@@ -17,7 +17,7 @@ export class AgesConfig {
         baseClickRate: 1.0,
         clickRateMultiplier: 0.01,
         timeMachineBaseGenerateMultiplier: 0.01,
-        locked: true,
+        unlockedAt: 0,
         messages: [
           'In the stone age it seems that people are using stones for things...',
           'A stone can also be food if you are hungry enough.',
@@ -30,7 +30,7 @@ export class AgesConfig {
         baseClickRate: 3.0,
         clickRateMultiplier: 0.03,
         timeMachineBaseGenerateMultiplier: 0.03,
-        locked: false,
+        unlockedAt: 100,
         messages: [
           'I was in the middle, and then I was there...',
           'The middle ages has black death plague.',
@@ -43,7 +43,7 @@ export class AgesConfig {
         baseClickRate: 8.0,
         clickRateMultiplier: 0.08,
         timeMachineBaseGenerateMultiplier: 0.08,
-        locked: false,
+        unlockedAt: 200,
         messages: [
           'The early modern age message 1!',
           'The early modern age message 2!',
@@ -56,7 +56,7 @@ export class AgesConfig {
         baseClickRate: 20.0,
         clickRateMultiplier: 0.2,
         timeMachineBaseGenerateMultiplier: 0.2,
-        locked: false,
+        unlockedAt: 300,
         messages: ['REVOLUTIONARY WAR!!!!', 'CIVIL WAR!!!'],
       },
       {
@@ -67,7 +67,7 @@ export class AgesConfig {
         baseClickRate: 50.0,
         clickRateMultiplier: 0.5,
         timeMachineBaseGenerateMultiplier: 0.5,
-        locked: false,
+        unlockedAt: 400,
         messages: ['REVOLUTIONARY WAR!!!!', 'CIVIL WAR!!!'],
       },
     ];

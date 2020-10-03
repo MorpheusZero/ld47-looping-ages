@@ -11,3 +11,12 @@
 @import url("https://unpkg.com/purecss@2.0.3/build/forms-min.css");
 @import url("https://unpkg.com/purecss@2.0.3/build/tables-min.css");
 @import url("https://unpkg.com/purecss@2.0.3/build/menus-min.css");
+
+// General CSS To Reuse
+.italic {
+  font-style: italic;
+}
+
+.bold {
+  font-weight: bolder;
+}

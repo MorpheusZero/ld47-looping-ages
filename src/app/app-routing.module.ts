@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AppGameComponent } from './features/game/game.component';
-import { AppPlaceholderComponent } from './features/placeholder/placeholder.component';
+import { AppNewGameComponent } from './features/new-game/new-game.component';
 
 const routes: Routes = [
-  { path: '', component: AppPlaceholderComponent },
+  { path: '', component: AppGameComponent },
   {
-    path: 'game',
-    component: AppGameComponent,
+    path: 'new',
+    component: AppNewGameComponent,
   },
 ];
 

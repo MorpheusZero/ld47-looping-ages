@@ -1,13 +1,21 @@
 <div class="container-fluid">
   <div class="row col-12 center">
-    <h2>Dark Matter: {{ gameData.currentDarkMatter }}</h2>
-    <h2>Time Particles: {{ gameData.currentTimeParticles }}</h2>
+    <h2>Paradox Tokens: {{ gameData.currentParadoxTokens }}</h2>
+    <br />
+    <h2>Dark Matter: {{ gameData.currentDarkMatter.toFixed(2) }}</h2>
+    <h2>Time Particles: {{ gameData.currentTimeParticles.toFixed(2) }}</h2>
 
     <app-clicker
       [clickRate]="gameData.currentBaseClickRate"
       [clickMultiplier]="gameData.currentClickRateMultiplier"
       (clickerEarnings)="addClickerEarnings($event)"
     ></app-clicker>
+
+    <button *ngIf="canAdvanceAge()" (click)="goToNextAge()">
+      Jump To Next Age!
+    </button>
+
+    <button *ngIf="canLoop()" (click)="loop()">LOOP!</button>
 
     <app-dark-matter-collector
       [collectorsOwned]="gameData.darkMatterCollectorOwned"
@@ -17,6 +25,10 @@
       (collectorsUpdated)="updateCollectors($event)"
     >
     </app-dark-matter-collector>
+
+    <button *ngIf="canFixTime()" (click)="fixTime()">
+      Fix The Time Continuum
+    </button>
 
     <app-time-machines
       [timeMachines]="gameData.timeMachines"

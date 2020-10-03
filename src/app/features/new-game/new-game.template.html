@@ -1,0 +1,71 @@
+<div id="new-game-container" class="container-fluid new-game-component">
+  <!--// GAME TITLE INTRO SPLASH SCREEN //-->
+  <div id="intro-container" class="center">
+    <div id="intro">
+      <h1>LoopingAges</h1>
+      <h2>By MorpheusZero</h2>
+    </div>
+  </div>
+
+  <div id="new-game-form" *ngIf="splashFinished" class="row col-12">
+    <div class="story-text-start">
+      <p>
+        You wake up, or at least you think you did? You don't really remember
+        falling asleep in the first place. You get up from the ground and look
+        around. There is nothing but wilderness. You reach in your pocket and
+        find a note--"Is that MY handwriting?"--
+      </p>
+      <p class="italic">
+        "The time continuum is still broken. I need to gather more Paradox
+        Tokens to fix the timeline or I'll be stuck repeating this loop
+        forever...REMEMBER!"
+      </p>
+      <p>
+        The note trails off into more details about how I need to collect
+        <span class="bold italic">dark matter</span> and
+        <span class="bold italic">time particles</span> to advance through
+        various ages of civilization to break free of this time loop. It doesn't
+        make much sense, and I don't know who wrote this--I don't even remember
+        my own name. Looks like we are starting in the
+        <span class="bold italic">Stone Age</span>. I guess I am some sort of
+        time traveler now then? I probably need a new name...
+      </p>
+
+      <form class="pure-form pure-form-stacked">
+        <fieldset>
+          <legend>What is your name?</legend>
+          <label for="stacked-name">Name</label>
+          <input
+            type="text"
+            id="stacked-name"
+            [(ngModel)]="newName"
+            [ngModelOptions]="{standalone: true}"
+            placeholder="What is my name?"
+          />
+          <span class="pure-form-message">Choose a name to continue</span>
+          <button
+            *ngIf="gameData.name"
+            type="button"
+            (click)="start()"
+            class="pure-button pure-button-primary"
+          >
+            Start Your Journey!
+          </button>
+          <div *ngIf="dataExists">
+            <p>
+              Data already exists for [{{gameData.name}}]. If you don't want to
+              delete it, click below to load that save instead!
+            </p>
+            <button
+              type="button"
+              [routerLink]="'/'"
+              class="pure-button pure-button-secondary"
+            >
+              Load {{ gameData.name }}
+            </button>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>
