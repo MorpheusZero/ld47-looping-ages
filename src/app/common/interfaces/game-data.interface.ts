@@ -102,6 +102,21 @@ export interface IGameData {
   loopMessages: string[];
 
   /**
+   * The amount of dark matter collectors that are currently owned.
+   */
+  darkMatterCollectorOwned: number;
+
+  /**
+   * The base cost of a dark matter collector.
+   */
+  darkMatterCollectorBaseCost: number;
+
+  /**
+   * How much more the collectors will cost based on how much you own.
+   */
+  darkMatterCollectorCostMultiplier: number;
+
+  /**
    * The time machines that are configured for the time travelers game.
    */
   timeMachines: ITimeMachine[];

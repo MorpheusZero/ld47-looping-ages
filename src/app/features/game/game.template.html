@@ -9,8 +9,18 @@
       (clickerEarnings)="addClickerEarnings($event)"
     ></app-clicker>
 
+    <app-dark-matter-collector
+      [collectorsOwned]="gameData.darkMatterCollectorOwned"
+      [collectorsBaseCost]="gameData.darkMatterCollectorBaseCost"
+      [collectorsCostMultiplier]="gameData.darkMatterCollectorCostMultiplier"
+      [timeParticleCount]="gameData.currentTimeParticles"
+      (collectorsUpdated)="updateCollectors($event)"
+    >
+    </app-dark-matter-collector>
+
     <app-time-machines
       [timeMachines]="gameData.timeMachines"
+      [darkMatterCount]="gameData.currentDarkMatter"
       (timeMachinesUpdated)="updateTimeMachines($event)"
     ></app-time-machines>
   </div>

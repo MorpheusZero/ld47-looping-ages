@@ -8,10 +8,10 @@
     "build-prod": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "deploy-latest": "npm run docker-build && npm run docker-push && npm run deploy",
+    "deploy": "npm run docker-build && npm run docker-push && npm run deploy",
     "docker-build": "docker build -t us.gcr.io/legendre-home/looping-ages:latest .",
     "docker-push": "docker push us.gcr.io/legendre-home/looping-ages:latest",
-    "deploy": "gcloud run deploy looping-ages --image us.gcr.io/legendre-home/looping-ages:latest --region us-central1 --platform managed --allow-unauthenticated"
+    "deploy-latest": "gcloud run deploy looping-ages --image us.gcr.io/legendre-home/looping-ages:latest --region us-central1 --platform managed --allow-unauthenticated"
   },
   "private": true,
   "dependencies": {

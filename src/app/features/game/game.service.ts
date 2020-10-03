@@ -53,7 +53,7 @@ export class AppGameService {
    * @param numParadoxTokens The current number of paradox tokens the time traveler has.
    * @param paradoxTokenBonus The config bonus amount per paradox token.
    */
-  public calculatePerSecondEarnings(
+  public calculatePerSecondTimeParticleEarnings(
     timeMachines: ITimeMachine[],
     numParadoxTokens: number,
     paradoxTokenBonus: number
@@ -71,6 +71,16 @@ export class AppGameService {
       earnings += earnings * (1 + numParadoxTokens * paradoxTokenBonus);
     }
 
+    return parseFloat(earnings.toFixed(Constants.DECIMAL_PLACES));
+  }
+
+  /**
+   * Calculate dark matter earnings per second based on the data passed in.
+   * @param collectors The amount of collectors owned.
+   */
+  public calculatePerSecondDarkMatterEarnings(collectors: number): number {
+    // TODO: If i have time, don't hardcode the amount.
+    const earnings = collectors * 5.0;
     return parseFloat(earnings.toFixed(Constants.DECIMAL_PLACES));
   }
 

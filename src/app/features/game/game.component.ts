@@ -66,7 +66,8 @@ export class AppGameComponent implements OnInit, OnDestroy {
    */
   public initializeGameLoop(): any {
     return setInterval(() => {
-      const timeParticles = this.gameService.calculatePerSecondEarnings(
+      // ######################################
+      const timeParticles = this.gameService.calculatePerSecondTimeParticleEarnings(
         this.gameData.timeMachines,
         this.gameData.currentParadoxTokens,
         this.gameData.paradoxTokenBonus
@@ -74,10 +75,41 @@ export class AppGameComponent implements OnInit, OnDestroy {
       this.gameData.currentTimeParticles += timeParticles;
       this.gameData.prestigeTimeParticles += timeParticles;
       this.gameData.lifetimeTimeParticles += timeParticles;
+
+      // ########################################
+      const darkMatter = this.gameService.calculatePerSecondDarkMatterEarnings(
+        this.gameData.darkMatterCollectorOwned
+      );
+      this.gameData.currentDarkMatter += darkMatter;
+      this.gameData.prestigeDarkMatter += darkMatter;
+      this.gameData.lifetimeDarkMatter += darkMatter;
     }, 1000);
   }
 
-  public updateTimeMachines(timeMachines: ITimeMachine[]): void {
-    this.gameData.timeMachines = Object.assign([], timeMachines);
+  /**
+   * Handles updating time machines when they are purchased.
+   * @param timeMachinesData The data passed from the child component.
+   */
+  public updateTimeMachines(timeMachinesData: {
+    timeMachines: ITimeMachine[];
+    darkMatterSpent: number;
+  }): void {
+    this.gameData.currentDarkMatter -= timeMachinesData.darkMatterSpent;
+    this.gameData.timeMachines = Object.assign(
+      [],
+      timeMachinesData.timeMachines
+    );
+  }
+
+  /**
+   * Handles updating the dark matter collectors when they are purchased.
+   * @param collectorsData The data passed from the child component.
+   */
+  public updateCollectors(collectorsData: {
+    collectorsOwned: number;
+    timeParticlesSpent: number;
+  }): void {
+    this.gameData.darkMatterCollectorOwned = collectorsData.collectorsOwned;
+    this.gameData.currentTimeParticles -= collectorsData.timeParticlesSpent;
   }
 }

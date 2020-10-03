@@ -1,7 +1,10 @@
 <div class="time-machines-component">
-  <div *ngFor="let tm of timeMachines">
-    <h4>{{ tm.name }}</h4>
+  <div *ngFor="let tm of timeMachines" style="margin: 15px">
+    <hr />
+    <h4>{{ tm.name }}: {{ tm.owned }}</h4>
     <p>{{tm.description}}</p>
-    <button (click)="buyTimeMachine(tm.key)">BUY</button>
+    <button (click)="buyTimeMachine(tm.key)">
+      BUY ({{getCostOfTimeMachine(tm)}})
+    </button>
   </div>
 </div>
