@@ -16,7 +16,6 @@ RUN npm i
 COPY . /app
 RUN cd /app && npm run build-prod
 
-
 # STEP 2 Build NGINX image to serve app
 FROM nginx:alpine
 

@@ -1,0 +1,7 @@
+<div class="time-machines-component">
+  <div *ngFor="let tm of timeMachines">
+    <h4>{{ tm.name }}</h4>
+    <p>{{tm.description}}</p>
+    <button (click)="buyTimeMachine(tm.key)">BUY</button>
+  </div>
+</div>
