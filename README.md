@@ -1,2 +1,22 @@
-# ld47-looping-ages
-An idle game about being stuck in a time loop while advancing through various ages of history and learning facts about that time period. My submission for Ludum Dare 47 in 2020.
+# LoopingAges
+
+This is a web application I built using Angular for the Ludum Dare 47 using the theme, "Stuck in a Loop".
+
+You can play the game here:
+   - https://looping-ages-xsb4vnqtfa-uc.a.run.app
+
+## Using Angular 10
+
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.1.4.
+
+## Development server
+
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+
+## Build
+
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+
+## Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
