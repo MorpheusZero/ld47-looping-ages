@@ -5,6 +5,8 @@ import { ITimeMachine } from '../../common/interfaces/time-machine.interface';
 import { AlertManager } from '../../common/util/alert.manager';
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
+import { CssHelper } from '../../common/util/css-helper';
+import { StorageManager } from '../../common/util/storage.manager';
 
 @Component({
   selector: 'app-game',
@@ -23,6 +25,11 @@ export class AppGameComponent implements OnInit, OnDestroy {
   public intervalRef: any;
 
   /**
+   * A reference to the news message interval (30s)
+   */
+  public messageRef: any;
+
+  /**
    * The amount of Dark Matter we are currently collecting per second.
    */
   public DMpS: number;
@@ -32,10 +39,17 @@ export class AppGameComponent implements OnInit, OnDestroy {
    */
   public TPpS: number;
 
+  /**
+   * The news message we want to display when we trigger the event.
+   */
+  public newsMessage: string;
+
   constructor(private gameService: AppGameService, private router: Router) {
     this.gameData = null;
     this.DMpS = 0;
     this.TPpS = 0;
+    this.newsMessage =
+      'TEST MESSAGE FOR PLACEMENT TEST MESSAGE FOR PLACEMENT TEST MESSAGE FOR PLACEMENT TEST MESSAGE FOR PLACEMENT';
   }
 
   /**
@@ -45,6 +59,7 @@ export class AppGameComponent implements OnInit, OnDestroy {
     this.gameData = this.gameService.loadGameData();
     this.determineNewGameStatus();
     this.intervalRef = this.initializeGameLoop();
+    this.messageRef = this.initializeNewsLoop();
   }
 
   /**
@@ -53,6 +68,9 @@ export class AppGameComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     if (this.intervalRef) {
       window.clearInterval(this.intervalRef);
+    }
+    if (this.messageRef) {
+      window.clearInterval(this.messageRef);
     }
   }
 
@@ -89,18 +107,39 @@ export class AppGameComponent implements OnInit, OnDestroy {
       // Dark Matter
       // ########################################
       const darkMatter = this.gameService.calculatePerSecondDarkMatterEarnings(
-        this.gameData.darkMatterCollectorOwned
+        this.gameData.darkMatterCollectorOwned,
+        this.gameData.currentBaseClickRate,
+        this.gameData.currentClickRateMultiplier
       );
       this.gameData.currentDarkMatter += darkMatter;
       this.gameData.prestigeDarkMatter += darkMatter;
       this.gameData.lifetimeDarkMatter += darkMatter;
       this.DMpS = darkMatter;
 
-      // DEBUG
-      if (!environment.production) {
-        console.log(this.gameData);
-      }
+      // Check Time Machine Lock Status
+      this.gameService.checkTimeMachineLockStatus(this.gameData);
     }, 1000);
+  }
+
+  /**
+   * Starts the news looper.
+   */
+  public initializeNewsLoop(): any {
+    return setInterval(() => {
+      this.newsMessage = this.gameService.generateNextNewsMessage(
+        this.gameData
+      );
+      const element = document.getElementById('newsMessage');
+      CssHelper.fadeIn(element, 2500);
+      setTimeout(() => {
+        CssHelper.fadeOut(element, 2500);
+        setTimeout(() => {
+          this.newsMessage = '';
+        }, 2600);
+      }, 25000);
+      // Additionally autosave the game here every 30 seconds
+      this.gameService.saveGameData(this.gameData);
+    }, 30000);
   }
 
   /**
@@ -154,10 +193,7 @@ export class AppGameComponent implements OnInit, OnDestroy {
     this.gameData = this.gameService.setGameDataValuesBasedOnNewAge(
       this.gameData
     );
-    AlertManager.info(
-      nextAge.name,
-      this.gameService.getRandomMessageFromArray(nextAge.messages)
-    );
+    AlertManager.success(nextAge.name, nextAge.description);
   }
 
   /**
@@ -178,6 +214,10 @@ export class AppGameComponent implements OnInit, OnDestroy {
    * Loops back to the beginning of the timeline.
    */
   public loop(): void {
+    AlertManager.question(
+      `PARADOX TOKEN +1`,
+      this.gameService.getRandomMessageFromArray(this.gameData.loopMessages)
+    );
     this.gameData = this.gameService.loop(this.gameData);
   }
 
@@ -198,8 +238,13 @@ export class AppGameComponent implements OnInit, OnDestroy {
   /**
    * You reached the end of the game! Congrats!
    */
-  public fixTime(): void {
-    alert('YOU BEAT THE GAME! YES THERE IS AN ENDING!!!!!');
+  public async fixTime(): Promise<void> {
+    const res = await AlertManager.success(
+      `Time Continuum Fixed!`,
+      this.gameService.getGameFinishedMessage(this.gameData)
+    );
+    StorageManager.deleteSaveGame();
+    this.router.navigate(['new']);
   }
 
   /**

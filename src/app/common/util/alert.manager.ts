@@ -8,8 +8,8 @@ export class AlertManager {
     title: string,
     message: string,
     icon: string
-  ): void {
-    Swal.fire({
+  ): any {
+    return Swal.fire({
       title,
       text: message,
       icon: icon as any,
@@ -30,8 +30,8 @@ export class AlertManager {
     AlertManager.postMessage(title, message, 'error');
   }
 
-  public static success(title: string, message: string): void {
-    AlertManager.postMessage(title, message, 'success');
+  public static async success(title: string, message: string): Promise<any> {
+    return AlertManager.postMessage(title, message, 'success');
   }
 
   public static question(title: string, message: string): void {

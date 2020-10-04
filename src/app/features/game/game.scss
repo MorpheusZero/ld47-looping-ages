@@ -6,7 +6,7 @@
     padding: 8px;
 
     &.stone-age {
-      background-color: greenyellow;
+      background-color: forestgreen;
     }
 
     &.middle-ages {
@@ -27,6 +27,53 @@
 
     .next-age-button {
       margin-top: 8px;
+    }
+
+  }
+
+  .content-panel {
+    height: 550px;
+
+    .row {
+      height: 100%;
+      width: 100%;
+
+      .time-machine-wrapper {
+        border: 1px solid black;
+        box-shadow: 1px 2px 3px grey;
+        height: 100%;
+        overflow: auto;
+      }
+
+      .news-wrapper {
+        border: 1px solid black;
+        box-shadow: 1px 2px 3px grey;
+        height: 100%;
+        overflow: auto;
+
+        .message-container {
+          text-align: center;
+          position: relative;
+          top: 30%;
+          padding: 15px;
+
+          #newsMessage {
+            opacity: 0;
+          }
+        }
+      }
+
+    }
+  }
+
+  .win-panel {
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+
+    .win-button {
+      padding: 30px;
     }
 
   }

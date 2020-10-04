@@ -1,10 +1,36 @@
 <div class="time-machines-component">
-  <div *ngFor="let tm of timeMachines" style="margin: 15px">
-    <hr />
-    <h4>{{ tm.name }}: {{ tm.owned }}</h4>
-    <p>{{tm.description}}</p>
-    <button (click)="buyTimeMachine(tm.key)">
-      BUY ({{getCostOfTimeMachine(tm)}})
-    </button>
+  <div *ngFor="let tm of timeMachines">
+    <div *ngIf="!tm.locked" class="tm-card">
+      <div class="row">
+        <div class="col-6">
+          <h4 class="tm-card--title">{{ tm.name }}</h4>
+        </div>
+        <div class="col-5 right">
+          <h4 class="tm-card--owned">{{ tm.owned }}</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <p class="tm-card--description">{{ tm.description }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <h5>
+            TP/s: {{ (tm.owned * tm.generateMultiplier *
+            tm.baseGenerateTimeParticles).toFixed(2) }}
+          </h5>
+        </div>
+        <div class="col-5 right">
+          <button
+            [disabled]="darkMatterCount < getCostOfTimeMachine(tm)"
+            class="pure-button button-success button-sm"
+            (click)="buyTimeMachine(tm.key)"
+          >
+            Buy ({{getCostOfTimeMachine(tm)}}) DM
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

@@ -3,8 +3,10 @@
   <div class="header-panel {{gameData.currentAge}}">
     <div class="row">
       <div class="col-3">
-        <h4>Dark Matter: {{ gameData.currentDarkMatter.toFixed(2) }}</h4>
-        <h4>Time Particles: {{ gameData.currentTimeParticles.toFixed(2) }}</h4>
+        <h4>Dark Matter (DM): {{ gameData.currentDarkMatter.toFixed(2) }}</h4>
+        <h4>
+          Time Particles (TP): {{ gameData.currentTimeParticles.toFixed(2) }}
+        </h4>
       </div>
 
       <div class="col-6 center">
@@ -20,6 +22,16 @@
           [clickMultiplier]="gameData.currentClickRateMultiplier"
           (clickerEarnings)="addClickerEarnings($event)"
         ></app-clicker>
+
+        <app-dark-matter-collector
+          *ngIf="gameData.lifetimeDarkMatter >= 250"
+          [collectorsOwned]="gameData.darkMatterCollectorOwned"
+          [collectorsBaseCost]="gameData.darkMatterCollectorBaseCost"
+          [collectorsCostMultiplier]="gameData.darkMatterCollectorCostMultiplier"
+          [timeParticleCount]="gameData.currentTimeParticles"
+          (collectorsUpdated)="updateCollectors($event)"
+        >
+        </app-dark-matter-collector>
       </div>
 
       <div class="col-2">
@@ -27,6 +39,7 @@
         <h4 title="Time Particles per Second">TP/s: {{ TPpS.toFixed(2) }}</h4>
       </div>
     </div>
+    <!--// Progress Bar and Age/Loop Buttons //-->
     <div class="row col-12 center">
       <app-age-progress-bar
         [currentLifetimeTimeParticles]="gameData.lifetimeTimeParticles"
@@ -36,7 +49,7 @@
 
       <button
         *ngIf="canAdvanceAge()"
-        class="pure-button pure-button-secondary next-age-button"
+        class="pure-button button-secondary next-age-button"
         (click)="goToNextAge()"
       >
         Jump To <span class="bold">[{{getNextAgeName()}}]</span>!
@@ -44,7 +57,7 @@
 
       <button
         *ngIf="canLoop()"
-        class="pure-button pure-button-secondary next-age-button"
+        class="pure-button button-secondary next-age-button"
         (click)="loop()"
       >
         Stuck In A Loop! <span class="bold">[+1 Paradox Token]</span>!
@@ -52,25 +65,39 @@
     </div>
   </div>
 
-  <!--// OLD SHIT //-->
-  <div class="row col-12 center">
-    <app-dark-matter-collector
-      [collectorsOwned]="gameData.darkMatterCollectorOwned"
-      [collectorsBaseCost]="gameData.darkMatterCollectorBaseCost"
-      [collectorsCostMultiplier]="gameData.darkMatterCollectorCostMultiplier"
-      [timeParticleCount]="gameData.currentTimeParticles"
-      (collectorsUpdated)="updateCollectors($event)"
-    >
-    </app-dark-matter-collector>
+  <!--// Content Panel //-->
+  <div *ngIf="!canFixTime()" class="content-panel">
+    <!--// Bottom Panel // -->
+    <div class="row">
+      <!--// Purchases //-->
+      <div class="col-4 time-machine-wrapper">
+        <app-time-machines
+          [timeMachines]="gameData.timeMachines"
+          [darkMatterCount]="gameData.currentDarkMatter"
+          (timeMachinesUpdated)="updateTimeMachines($event)"
+        ></app-time-machines>
+      </div>
+      <!--// NEWS //-->
+      <div class="col-7 news-wrapper center">
+        <h5>The Lonely Thoughts of {{ gameData.name }}</h5>
+        <div class="message-container">
+          <h3 id="newsMessage">"{{ newsMessage }}"</h3>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <button *ngIf="canFixTime()" (click)="fixTime()">
-      Fix The Time Continuum
-    </button>
-
-    <app-time-machines
-      [timeMachines]="gameData.timeMachines"
-      [darkMatterCount]="gameData.currentDarkMatter"
-      (timeMachinesUpdated)="updateTimeMachines($event)"
-    ></app-time-machines>
+  <!--// GAME END //-->
+  <div *ngIf="canFixTime()" class="win-panel">
+    <div class="win-button">
+      <button
+        (click)="fixTime()"
+        title="If you press this it will finish the game!"
+        type="button"
+        class="pure-button button-error button-lg"
+      >
+        FIX THE TIME CONTINUUM!
+      </button>
+    </div>
   </div>
 </div>

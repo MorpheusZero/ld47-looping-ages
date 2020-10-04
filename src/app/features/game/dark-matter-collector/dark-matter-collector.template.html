@@ -1,9 +1,15 @@
 <div class="dark-matter-collector-component">
-  <h4>Dark Matter Collectors: {{ collectorsOwned }}</h4>
+  <h4
+    title="Dark Matter collectors will automatically click for you once every second."
+  >
+    Dark Matter Collectors: {{ collectorsOwned }}
+  </h4>
   <button
+    title="Dark Matter collectors will automatically click for you once every second."
     [disabled]="getCost() > timeParticleCount"
     (click)="buyDarkMatterCollector(getCost())"
+    class="pure-button button-warning button-sm"
   >
-    Buy Collector ({{ getCost() }})
+    Buy Collector ({{ getCost() }}) TP
   </button>
 </div>

@@ -8,6 +8,7 @@ import { AgesKeyEnum } from '../../common/enums/ages-key.enum';
 import { IAge } from '../../common/interfaces/age.interface';
 import { AgesConfig } from '../../common/configs/ages.config';
 import { TimeMachinesConfig } from '../../common/configs/time-machines.config';
+import { DateHelper } from '../../common/util/date-helper';
 
 @Injectable({
   providedIn: 'root',
@@ -80,9 +81,12 @@ export class AppGameService {
    * Calculate dark matter earnings per second based on the data passed in.
    * @param collectors The amount of collectors owned.
    */
-  public calculatePerSecondDarkMatterEarnings(collectors: number): number {
-    // TODO: If I have time, don't hardcode the amount.
-    const earnings = collectors * 5.0;
+  public calculatePerSecondDarkMatterEarnings(
+    collectors: number,
+    baseClickRate: number,
+    clickMultiplier: number
+  ): number {
+    const earnings = collectors * baseClickRate * clickMultiplier;
     return parseFloat(earnings.toFixed(Constants.DECIMAL_PLACES));
   }
 
@@ -259,11 +263,61 @@ export class AppGameService {
   }
 
   /**
+   * Checks time machine locked status based on lifetime dark matter obtained.
+   * @param gameData A reference to the actual game data object.
+   */
+  public checkTimeMachineLockStatus(gameData: IGameData): void {
+    const darkMatter = gameData.lifetimeDarkMatter;
+    gameData.timeMachines.forEach((tm) => {
+      if (darkMatter >= tm.unlockedAtLifeTimeDarkMatter) {
+        tm.locked = false;
+      }
+    });
+  }
+
+  /**
+   * Generate the next random news message based on the possible messages that we have unlocked at the moment.
+   * @param gameData The current game data configuration.
+   */
+  public generateNextNewsMessage(gameData: IGameData): string {
+    let possibleNews = [];
+    gameData.timeMachines.forEach((tm) => {
+      if (tm.owned > 0) {
+        possibleNews = [...possibleNews, ...tm.messages];
+      }
+    });
+    const currentAge = this.getAgeByKey(gameData.currentAge, gameData.ages);
+    possibleNews = [...possibleNews, ...currentAge.messages];
+    if (possibleNews.length) {
+      return this.getRandomMessageFromArray(possibleNews);
+    } else {
+      return 'I should collect more Dark Matter and purchase some time machines!';
+    }
+  }
+
+  /**
    * Given an array of messages, will randomly choose one from the list to return.
    * @param messages The array of possible choices.
    */
   public getRandomMessageFromArray(messages: string[]): string {
     const index = Math.floor(Math.random() * messages.length);
     return messages[index];
+  }
+
+  /**
+   * Returns a game complete message with stats and other info about your session.
+   * @param gameData  A reference to the completed game object.
+   */
+  public getGameFinishedMessage(gameData: IGameData): string {
+    return `
+    Congratulations! You used your Paradox Tokens to fix The Time Continuum and space/time is now stable again! It took you [${DateHelper.diffHours(
+      new Date(),
+      new Date(gameData.startTime)
+    )}] hours. You clicked a total of [${
+      gameData.lifetimeClickCount
+    }] times and looped through the ages [${
+      gameData.currentParadoxTokens
+    }] times. Now that you've completed your journey, you find yourself face to face with a door. You choose to walk through it, not knowing where it will take you. **An error occurs in the new Time Continuum, a new Time Traveler appears**
+    `;
   }
 }

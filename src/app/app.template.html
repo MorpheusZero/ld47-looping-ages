@@ -1,2 +1,38 @@
+<div class="pure-menu pure-menu-horizontal">
+  <a [routerLink]="'/'" class="pure-menu-heading pure-menu-link">LoopingAges</a>
+  <ul class="pure-menu-list">
+    <li class="pure-menu-item">
+      <a [routerLink]="'/new'" class="pure-menu-link">New Game</a>
+    </li>
+    <li class="pure-menu-item">
+      <a
+        href="https://ldjam.com/events/ludum-dare/47/$218625"
+        target="_blank"
+        class="pure-menu-link"
+        >Ludum Dare 47</a
+      >
+    </li>
+    <li class="pure-menu-item">
+      <a
+        href="https://twitter.com/Dylan_Legendre"
+        target="_blank"
+        class="pure-menu-link"
+        >Twitter</a
+      >
+    </li>
+    <li class="pure-menu-item" style="cursor: pointer" (click)="showCredits()">
+      <a class="pure-menu-link">Credits</a>
+    </li>
+    <li class="pure-menu-item">
+      <a
+        href="https://github.com/MorpheusZero/ld47-looping-ages"
+        target="_blank"
+        class="pure-menu-link"
+        >Source Code (Github)</a
+      >
+    </li>
+  </ul>
+</div>
+
 <!--// All views get injected here //-->
 <router-outlet></router-outlet>

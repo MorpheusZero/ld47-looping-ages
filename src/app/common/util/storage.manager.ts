@@ -33,4 +33,11 @@ export class StorageManager {
       return null;
     }
   }
+
+  /**
+   * Deletes your saved data from local Storage.
+   */
+  public static deleteSaveGame(): void {
+    localStorage.removeItem(StorageManager.SAVED_GAME_DATA_KEY);
+  }
 }
