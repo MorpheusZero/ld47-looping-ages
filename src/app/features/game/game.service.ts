@@ -173,6 +173,35 @@ export class AppGameService {
   }
 
   /**
+   * Returns the number of lifetime particles we need to advance to the next age.
+   * @param currentAgeKey The age we are currently on.
+   * @param ages An array of all ages.
+   * @param currentParadoxTokens How many tokens we have lets us know how many loops we've been through.
+   */
+  public getParticlesNeededToAdvanceAge(
+    currentAgeKey: AgesKeyEnum,
+    ages: IAge[],
+    currentParadoxTokens: number,
+    paradoxTokenBaseCost: number,
+    paradoxTokenCostMultiplier: number
+  ): number {
+    const currentAgeIndex = ages.findIndex((a) => a.key === currentAgeKey);
+    if (currentAgeIndex !== ages.length - 1) {
+      const nextAgeIndex = currentAgeIndex + 1;
+      const needed = !currentParadoxTokens
+        ? ages[nextAgeIndex].unlockedAt
+        : (currentParadoxTokens + 1) * ages[nextAgeIndex].unlockedAt;
+      return needed;
+    } else {
+      return currentParadoxTokens
+        ? currentParadoxTokens *
+            paradoxTokenBaseCost *
+            paradoxTokenCostMultiplier
+        : paradoxTokenBaseCost;
+    }
+  }
+
+  /**
    * When returns TRUE, it means that the time traveler can loop back to the beginning of the timeline and obtain a new Paradox Token!
    * @param currentAgeKey The age that the time traveler is currently in.
    * @param ages A list of all possibles ages.

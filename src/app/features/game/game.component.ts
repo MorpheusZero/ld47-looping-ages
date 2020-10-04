@@ -23,24 +23,28 @@ export class AppGameComponent implements OnInit, OnDestroy {
   public intervalRef: any;
 
   /**
-   * Whether or not the game is loading.
+   * The amount of Dark Matter we are currently collecting per second.
    */
-  public isLoading: boolean;
+  public DMpS: number;
+
+  /**
+   * The amount of Time Particles we are currently collecting per second.
+   */
+  public TPpS: number;
 
   constructor(private gameService: AppGameService, private router: Router) {
     this.gameData = null;
-    this.isLoading = false;
+    this.DMpS = 0;
+    this.TPpS = 0;
   }
 
   /**
    * Loaded initially when the component loads.
    */
   public ngOnInit(): void {
-    this.isLoading = true;
     this.gameData = this.gameService.loadGameData();
     this.determineNewGameStatus();
     this.intervalRef = this.initializeGameLoop();
-    this.isLoading = false;
   }
 
   /**
@@ -80,6 +84,7 @@ export class AppGameComponent implements OnInit, OnDestroy {
       this.gameData.currentTimeParticles += timeParticles;
       this.gameData.prestigeTimeParticles += timeParticles;
       this.gameData.lifetimeTimeParticles += timeParticles;
+      this.TPpS = timeParticles;
 
       // Dark Matter
       // ########################################
@@ -89,6 +94,7 @@ export class AppGameComponent implements OnInit, OnDestroy {
       this.gameData.currentDarkMatter += darkMatter;
       this.gameData.prestigeDarkMatter += darkMatter;
       this.gameData.lifetimeDarkMatter += darkMatter;
+      this.DMpS = darkMatter;
 
       // DEBUG
       if (!environment.production) {
@@ -194,6 +200,26 @@ export class AppGameComponent implements OnInit, OnDestroy {
    */
   public fixTime(): void {
     alert('YOU BEAT THE GAME! YES THERE IS AN ENDING!!!!!');
+  }
+
+  /**
+   * Get the name of the next age we will travel to.
+   */
+  public getNextAgeName(): string {
+    return this.gameService.getNextAge(
+      this.gameData.currentAge,
+      this.gameData.ages
+    ).name;
+  }
+
+  public getParticlesNeededForNextAge(): number {
+    return this.gameService.getParticlesNeededToAdvanceAge(
+      this.gameData.currentAge,
+      this.gameData.ages,
+      this.gameData.currentParadoxTokens,
+      this.gameData.paradoxTokenBaseCost,
+      this.gameData.paradoxTokenMultiplier
+    );
   }
 
   /**

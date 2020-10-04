@@ -1,22 +1,59 @@
-<div class="container-fluid">
+<div class="container-fluid game-component">
+  <!--// Header Panel //-->
+  <div class="header-panel {{gameData.currentAge}}">
+    <div class="row">
+      <div class="col-3">
+        <h4>Dark Matter: {{ gameData.currentDarkMatter.toFixed(2) }}</h4>
+        <h4>Time Particles: {{ gameData.currentTimeParticles.toFixed(2) }}</h4>
+      </div>
+
+      <div class="col-6 center">
+        <h3
+          title="You need to collect Paradox Tokens to fix the time continuum and beat the game!"
+        >
+          Paradox Tokens: {{ gameData.currentParadoxTokens }} / {{
+          gameData.fixTimeContinuumCostInTokens }}
+        </h3>
+
+        <app-clicker
+          [clickRate]="gameData.currentBaseClickRate"
+          [clickMultiplier]="gameData.currentClickRateMultiplier"
+          (clickerEarnings)="addClickerEarnings($event)"
+        ></app-clicker>
+      </div>
+
+      <div class="col-2">
+        <h4 title="Dark Matter per Second">DM/s: {{ DMpS.toFixed(2) }}</h4>
+        <h4 title="Time Particles per Second">TP/s: {{ TPpS.toFixed(2) }}</h4>
+      </div>
+    </div>
+    <div class="row col-12 center">
+      <app-age-progress-bar
+        [currentLifetimeTimeParticles]="gameData.lifetimeTimeParticles"
+        [particlesNeeded]="getParticlesNeededForNextAge()"
+        [nextAgeName]="getNextAgeName()"
+      ></app-age-progress-bar>
+
+      <button
+        *ngIf="canAdvanceAge()"
+        class="pure-button pure-button-secondary next-age-button"
+        (click)="goToNextAge()"
+      >
+        Jump To <span class="bold">[{{getNextAgeName()}}]</span>!
+      </button>
+
+      <button
+        *ngIf="canLoop()"
+        class="pure-button pure-button-secondary next-age-button"
+        (click)="loop()"
+      >
+        Stuck In A Loop! <span class="bold">[+1 Paradox Token]</span>!
+      </button>
+    </div>
+  </div>
+
+  <!--// OLD SHIT //-->
   <div class="row col-12 center">
-    <h2>Paradox Tokens: {{ gameData.currentParadoxTokens }}</h2>
-    <br />
-    <h2>Dark Matter: {{ gameData.currentDarkMatter.toFixed(2) }}</h2>
-    <h2>Time Particles: {{ gameData.currentTimeParticles.toFixed(2) }}</h2>
-
-    <app-clicker
-      [clickRate]="gameData.currentBaseClickRate"
-      [clickMultiplier]="gameData.currentClickRateMultiplier"
-      (clickerEarnings)="addClickerEarnings($event)"
-    ></app-clicker>
-
-    <button *ngIf="canAdvanceAge()" (click)="goToNextAge()">
-      Jump To Next Age!
-    </button>
-
-    <button *ngIf="canLoop()" (click)="loop()">LOOP!</button>
-
     <app-dark-matter-collector
       [collectorsOwned]="gameData.darkMatterCollectorOwned"
       [collectorsBaseCost]="gameData.darkMatterCollectorBaseCost"

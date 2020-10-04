@@ -1,0 +1,20 @@
+#progress-bar {
+  width: 100%;
+  background: #cccccc;
+  position: relative;
+}
+
+#progress-bar-percentage {
+  background: lightcyan;
+  padding: 5px 0px;
+  color: #FFF;
+  text-align: center;
+  height: 20px;
+}
+
+#progress-bar-percentage span {
+  display: inline-block;
+  position: absolute;
+  width: 100%;
+  left: 0;
+}

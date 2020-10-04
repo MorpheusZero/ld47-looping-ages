@@ -1,3 +1,15 @@
 .clicker-component {
   margin: 0;
+
+  .pure-button {
+    margin-top: 8px;
+    margin-bottom: 15px;
+
+    &:active{
+      padding-left: 45px;
+      padding-right: 45px;
+    }
+
+  }
+
 }
